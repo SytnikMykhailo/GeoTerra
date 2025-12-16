@@ -1,5 +1,5 @@
 {
-  "name": "Interactive Map and Node Editor",
+  "name": "GeoTerra",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
