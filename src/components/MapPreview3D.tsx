@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, memo } from 'react';
 import * as THREE from 'three';
 import { MapSettings } from '../types';
 
@@ -65,7 +65,7 @@ function TerrainMesh({ settings }: { settings: MapSettings }) {
   );
 }
 
-export function MapPreview3D({ settings }: { settings: MapSettings }) {
+export const MapPreview3D = memo(function MapPreview3D({ settings }: { settings: MapSettings }) {
   return (
     <div className="w-full h-full bg-gradient-to-br from-purple-900/40 to-indigo-900/40 backdrop-blur-sm">
       <Canvas>
@@ -82,4 +82,4 @@ export function MapPreview3D({ settings }: { settings: MapSettings }) {
       </Canvas>
     </div>
   );
-}
+});

@@ -7,7 +7,7 @@ import { EditorPage } from './pages/EditorPage';
 import { ExportPageWrapper } from './pages/ExportPageWrapper';
 import { ProfilePage } from './pages/ProfilePage';
 import { useNavigation } from './hooks/useNavigation';
-import { useDialogs } from './hooks/useDialogs';
+import { DialogsProvider } from './contexts/DialogsContext';
 import { MapSettings } from './types';
 import { PlanetSettings } from './types/planet';
 
@@ -26,28 +26,16 @@ export default function App() {
   const [planetSettings, setPlanetSettings] = useState<PlanetSettings | null>(null);
 
   const { currentPage, navigateTo, navigateBack, navigateToProfile } = useNavigation();
-  const { 
-    preferencesOpen, 
-    setPreferencesOpen, 
-    historyOpen, 
-    setHistoryOpen,
-    openPreferences,
-    openHistory 
-  } = useDialogs();
 
   if (currentPage === 'landing') {
     return (
-      <LandingPageWrapper
-        onCreateMap={() => navigateTo('planet')}
-        onUsePreconfigured={() => navigateTo('template')}
-        onOpenProfile={navigateToProfile}
-        preferencesOpen={preferencesOpen}
-        setPreferencesOpen={setPreferencesOpen}
-        historyOpen={historyOpen}
-        setHistoryOpen={setHistoryOpen}
-        openPreferences={openPreferences}
-        openHistory={openHistory}
-      />
+      <DialogsProvider>
+        <LandingPageWrapper
+          onCreateMap={() => navigateTo('planet')}
+          onUsePreconfigured={() => navigateTo('template')}
+          onOpenProfile={navigateToProfile}
+        />
+      </DialogsProvider>
     );
   }
 
@@ -79,18 +67,14 @@ export default function App() {
   };
 
   return (
-    <Layout
-      onOpenProfile={navigateToProfile}
-      onOpenPreferences={openPreferences}
-      onOpenHistory={openHistory}
-      showBackButton={true}
-      onBack={currentPage === 'profile' ? navigateBack : () => navigateTo('landing')}
-      preferencesOpen={preferencesOpen}
-      setPreferencesOpen={setPreferencesOpen}
-      historyOpen={historyOpen}
-      setHistoryOpen={setHistoryOpen}
-    >
-      {pages[currentPage as keyof typeof pages]}
-    </Layout>
+    <DialogsProvider>
+      <Layout
+        onOpenProfile={navigateToProfile}
+        showBackButton={true}
+        onBack={currentPage === 'profile' ? navigateBack : () => navigateTo('landing')}
+      >
+        {pages[currentPage as keyof typeof pages]}
+      </Layout>
+    </DialogsProvider>
   );
 }

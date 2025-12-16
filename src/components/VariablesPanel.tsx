@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { MapSettings } from '../types';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -15,9 +16,9 @@ interface VariablesPanelProps {
 }
 
 export function VariablesPanel({ settings, onChange, onExport }: VariablesPanelProps) {
-  const updateSetting = <K extends keyof MapSettings>(key: K, value: MapSettings[K]) => {
+  const updateSetting = useCallback(<K extends keyof MapSettings>(key: K, value: MapSettings[K]) => {
     onChange({ ...settings, [key]: value });
-  };
+  }, [settings, onChange]);
 
   return (
     <div className="w-full h-full bg-gradient-to-br from-purple-900/30 to-indigo-900/30 backdrop-blur-sm p-2 sm:p-4 overflow-y-auto">

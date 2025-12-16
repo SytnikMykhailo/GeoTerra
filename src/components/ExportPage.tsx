@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ExportSettings } from '../types/export';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -25,19 +25,19 @@ export function ExportPage({ onBack }: ExportPageProps) {
     compressionLevel: 5,
   });
 
-  const updateSetting = <K extends keyof ExportSettings>(key: K, value: ExportSettings[K]) => {
-    setExportSettings({ ...exportSettings, [key]: value });
-  };
+  const updateSetting = useCallback(<K extends keyof ExportSettings>(key: K, value: ExportSettings[K]) => {
+    setExportSettings(prev => ({ ...prev, [key]: value }));
+  }, []);
 
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     console.log('Exporting with settings:', exportSettings);
     // Тут буде логіка експорту
-  };
+  }, [exportSettings]);
 
-  const handleExportTo = () => {
+  const handleExportTo = useCallback(() => {
     console.log('Export to custom location:', exportSettings);
     // Тут буде логіка вибору місця експорту
-  };
+  }, [exportSettings]);
 
   return (
     <div className="w-screen h-screen flex flex-col md:flex-row bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 overflow-hidden">

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import * as THREE from 'three';
 import { PlanetSettings } from '../types/planet';
 
@@ -6,7 +6,7 @@ interface PlanetPreview3DProps {
   settings: PlanetSettings;
 }
 
-export function PlanetPreview3D({ settings }: PlanetPreview3DProps) {
+export const PlanetPreview3D = memo(function PlanetPreview3D({ settings }: PlanetPreview3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -146,4 +146,4 @@ export function PlanetPreview3D({ settings }: PlanetPreview3DProps) {
       style={{ minHeight: '400px' }}
     />
   );
-}
+});

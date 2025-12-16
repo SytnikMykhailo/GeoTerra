@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { PlanetPreview3D } from './PlanetPreview3D';
 import { PlanetSettings } from '../types/planet';
 import { Card } from './ui/card';
@@ -32,9 +32,9 @@ export function PlanetConfigPage({ onContinue }: PlanetConfigPageProps) {
     gravity: 9.81,
   });
 
-  const updateSetting = <K extends keyof PlanetSettings>(key: K, value: PlanetSettings[K]) => {
-    setPlanetSettings({ ...planetSettings, [key]: value });
-  };
+  const updateSetting = useCallback(<K extends keyof PlanetSettings>(key: K, value: PlanetSettings[K]) => {
+    setPlanetSettings(prev => ({ ...prev, [key]: value }));
+  }, []);
 
   return (
     <div className="w-screen h-full flex flex-col md:flex-row bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 overflow-hidden">

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import { NodeType } from '../types';
 
 interface NodeProps {
@@ -27,7 +27,7 @@ const NODE_LABELS = {
   output: 'Output',
 };
 
-export function Node({ 
+export const Node = memo(function Node({ 
   node, 
   onDragStart, 
   onConnectStart, 
@@ -114,4 +114,4 @@ export function Node({
       </div>
     </div>
   );
-}
+});

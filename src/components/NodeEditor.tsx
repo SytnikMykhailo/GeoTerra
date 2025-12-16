@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { NodeType, Connection, NodeDefinition } from '../types';
 import { Node } from './Node';
 import { Button } from './ui/button';
@@ -47,7 +47,7 @@ export function NodeEditor() {
   const canvasRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
-  const handleNodeDragStart = (id: string, e: React.MouseEvent) => {
+  const handleNodeDragStart = useCallback((id: string, e: React.MouseEvent) => {
     const node = nodes.find(n => n.id === id);
     if (!node) return;
     
@@ -59,14 +59,14 @@ export function NodeEditor() {
       x: (e.clientX - rect.left) - node.position.x,
       y: (e.clientY - rect.top) - node.position.y,
     });
-  };
+  }, [nodes]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (draggingNode) {
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return;
       
-      setNodes(nodes.map(node => 
+      setNodes(prev => prev.map(node => 
         node.id === draggingNode
           ? {
               ...node,
@@ -88,15 +88,15 @@ export function NodeEditor() {
         y: e.clientY - rect.top,
       });
     }
-  };
+  }, [draggingNode, dragOffset, connectingFrom]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setDraggingNode(null);
     setConnectingFrom(null);
     setTempConnection(null);
-  };
+  }, []);
 
-  const handleConnectStart = (nodeId: string, outputIndex: number, e: React.MouseEvent) => {
+  const handleConnectStart = useCallback((nodeId: string, outputIndex: number, e: React.MouseEvent) => {
     setConnectingFrom({ nodeId, outputIndex });
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -105,9 +105,9 @@ export function NodeEditor() {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
     });
-  };
+  }, []);
 
-  const handleConnectEnd = (toNodeId: string, inputIndex: number) => {
+  const handleConnectEnd = useCallback((toNodeId: string, inputIndex: number) => {
     if (!connectingFrom) return;
     
     const newConnection: Connection = {
@@ -118,12 +118,12 @@ export function NodeEditor() {
       toInput: inputIndex,
     };
     
-    setConnections([...connections, newConnection]);
+    setConnections(prev => [...prev, newConnection]);
     setConnectingFrom(null);
     setTempConnection(null);
-  };
+  }, [connectingFrom]);
 
-  const addNode = (type: NodeDefinition) => {
+  const addNode = useCallback((type: NodeDefinition) => {
     const newNode: NodeType = {
       id: Date.now().toString(),
       type: type.type as any,
@@ -132,15 +132,15 @@ export function NodeEditor() {
       outputs: Array(type.outputs).fill('').map((_, i) => `out${i + 1}`),
     };
     
-    setNodes([...nodes, newNode]);
-  };
+    setNodes(prev => [...prev, newNode]);
+  }, []);
 
-  const deleteNode = (id: string) => {
-    setNodes(nodes.filter(n => n.id !== id));
-    setConnections(connections.filter(c => c.from !== id && c.to !== id));
-  };
+  const deleteNode = useCallback((id: string) => {
+    setNodes(prev => prev.filter(n => n.id !== id));
+    setConnections(prev => prev.filter(c => c.from !== id && c.to !== id));
+  }, []);
 
-  const getPortPosition = (nodeId: string, isOutput: boolean, index: number) => {
+  const getPortPosition = useCallback((nodeId: string, isOutput: boolean, index: number) => {
     const node = nodes.find(n => n.id === nodeId);
     if (!node) return { x: 0, y: 0 };
     
@@ -153,7 +153,7 @@ export function NodeEditor() {
       x: node.position.x + (isOutput ? nodeWidth : 0),
       y: node.position.y + portOffset,
     };
-  };
+  }, [nodes]);
 
   return (
     <div className="relative w-full h-full bg-gradient-to-br from-purple-900/30 to-indigo-900/30 backdrop-blur-sm overflow-hidden">
