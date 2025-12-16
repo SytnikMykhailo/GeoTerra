@@ -9,6 +9,7 @@ interface LayoutProps {
   onOpenProfile: () => void;
   showBackButton?: boolean;
   onBack?: () => void;
+  hideProfileButton?: boolean;
 }
 
 export const Layout = ({
@@ -16,6 +17,7 @@ export const Layout = ({
   onOpenProfile,
   showBackButton,
   onBack,
+  hideProfileButton,
 }: LayoutProps) => {
   const { preferencesOpen, setPreferencesOpen, historyOpen, setHistoryOpen, openPreferences, openHistory } = useDialogsContext();
   return (
@@ -26,6 +28,7 @@ export const Layout = ({
         onOpenHistory={openHistory}
         showBackButton={showBackButton}
         onBack={onBack}
+        hideProfileButton={hideProfileButton}
       />
       <div className="flex-1 overflow-hidden">
         {children}

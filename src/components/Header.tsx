@@ -9,9 +9,10 @@ interface HeaderProps {
   onOpenProfile?: () => void;
   onBack?: () => void;
   showBackButton?: boolean;
+  hideProfileButton?: boolean;
 }
 
-export function Header({ onOpenPreferences, onOpenHistory, onOpenProfile, onBack, showBackButton = false }: HeaderProps) {
+export function Header({ onOpenPreferences, onOpenHistory, onOpenProfile, onBack, showBackButton = false, hideProfileButton = false }: HeaderProps) {
   return (
     <header className="w-full h-10 sm:h-12 md:h-14 bg-gradient-to-r from-purple-900/80 to-purple-800/80 backdrop-blur-sm border-b border-purple-700/50 flex items-center justify-between px-2 sm:px-3 md:px-6">
       {/* Logo with optional back button */}
@@ -31,17 +32,19 @@ export function Header({ onOpenPreferences, onOpenHistory, onOpenProfile, onBack
       </div>
 
       {/* User Profile Button */}
-      <Button
-        onClick={onOpenProfile}
-        variant="ghost"
-        className="text-purple-200 hover:text-white hover:bg-purple-700/50 p-1 md:p-2 h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10"
-      >
-        <Avatar className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 bg-purple-600 border border-purple-400">
-          <AvatarFallback className="bg-purple-600 text-white">
-            <User className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
-          </AvatarFallback>
-        </Avatar>
-      </Button>
+      {!hideProfileButton && (
+        <Button
+          onClick={onOpenProfile}
+          variant="ghost"
+          className="text-purple-200 hover:text-white hover:bg-purple-700/50 p-1 md:p-2 h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10"
+        >
+          <Avatar className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 bg-purple-600 border border-purple-400">
+            <AvatarFallback className="bg-purple-600 text-white">
+              <User className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+            </AvatarFallback>
+          </Avatar>
+        </Button>
+      )}
     </header>
   );
 }

@@ -1,10 +1,8 @@
 import { useCallback } from 'react';
 import { MapSettings } from '../types';
+import { StyledCard, SliderControl, SwitchControl } from './common/FormControls';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
-import { Slider } from './ui/slider';
-import { Switch } from './ui/switch';
-import { Card } from './ui/card';
 import { Separator } from './ui/separator';
 import { Button } from './ui/button';
 import { Download } from 'lucide-react';
@@ -22,40 +20,28 @@ export function VariablesPanel({ settings, onChange, onExport }: VariablesPanelP
 
   return (
     <div className="w-full h-full bg-gradient-to-br from-purple-900/30 to-indigo-900/30 backdrop-blur-sm p-2 sm:p-4 overflow-y-auto">
-      <Card className="bg-gray-800/90 backdrop-blur-sm border-purple-700/50 p-3 sm:p-4">
+      <StyledCard className="p-3 sm:p-4">
         <h3 className="text-purple-200 mb-3 sm:mb-4 text-sm sm:text-base">Map Parameters</h3>
         
         {/* Dimensions */}
         <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="width" className="text-purple-200 text-xs sm:text-sm">
-              Width: {settings.width}
-            </Label>
-            <Slider
-              id="width"
-              min={10}
-              max={100}
-              step={1}
-              value={[settings.width]}
-              onValueChange={([value]) => updateSetting('width', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Width"
+            value={settings.width}
+            min={10}
+            max={100}
+            step={1}
+            onChange={(value) => updateSetting('width', value)}
+          />
 
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="depth" className="text-purple-200 text-xs sm:text-sm">
-              Depth: {settings.depth}
-            </Label>
-            <Slider
-              id="depth"
-              min={10}
-              max={100}
-              step={1}
-              value={[settings.depth]}
-              onValueChange={([value]) => updateSetting('depth', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Depth"
+            value={settings.depth}
+            min={10}
+            max={100}
+            step={1}
+            onChange={(value) => updateSetting('depth', value)}
+          />
         </div>
 
         <Separator className="bg-purple-700/50 my-3 sm:my-4" />
@@ -64,65 +50,44 @@ export function VariablesPanel({ settings, onChange, onExport }: VariablesPanelP
         <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
           <h4 className="text-purple-200 text-sm sm:text-base">Terrain Generation</h4>
           
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="heightScale" className="text-purple-200 text-xs sm:text-sm">
-              Height Scale: {settings.heightScale.toFixed(1)}
-            </Label>
-            <Slider
-              id="heightScale"
-              min={0}
-              max={20}
-              step={0.5}
-              value={[settings.heightScale]}
-              onValueChange={([value]) => updateSetting('heightScale', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Height Scale"
+            value={settings.heightScale}
+            min={0}
+            max={20}
+            step={0.5}
+            onChange={(value) => updateSetting('heightScale', value)}
+            formatValue={(val) => val.toFixed(1)}
+          />
 
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="octaves" className="text-purple-200 text-xs sm:text-sm">
-              Octaves: {settings.octaves}
-            </Label>
-            <Slider
-              id="octaves"
-              min={1}
-              max={8}
-              step={1}
-              value={[settings.octaves]}
-              onValueChange={([value]) => updateSetting('octaves', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Octaves"
+            value={settings.octaves}
+            min={1}
+            max={8}
+            step={1}
+            onChange={(value) => updateSetting('octaves', value)}
+          />
 
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="persistence" className="text-purple-200 text-xs sm:text-sm">
-              Persistence: {settings.persistence.toFixed(2)}
-            </Label>
-            <Slider
-              id="persistence"
-              min={0}
-              max={1}
-              step={0.01}
-              value={[settings.persistence]}
-              onValueChange={([value]) => updateSetting('persistence', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Persistence"
+            value={settings.persistence}
+            min={0}
+            max={1}
+            step={0.01}
+            onChange={(value) => updateSetting('persistence', value)}
+            formatValue={(val) => val.toFixed(2)}
+          />
 
-          <div className="space-y-1 sm:space-y-2">
-            <Label htmlFor="lacunarity" className="text-purple-200 text-xs sm:text-sm">
-              Lacunarity: {settings.lacunarity.toFixed(2)}
-            </Label>
-            <Slider
-              id="lacunarity"
-              min={1}
-              max={4}
-              step={0.1}
-              value={[settings.lacunarity]}
-              onValueChange={([value]) => updateSetting('lacunarity', value)}
-              className="w-full"
-            />
-          </div>
+          <SliderControl
+            label="Lacunarity"
+            value={settings.lacunarity}
+            min={1}
+            max={4}
+            step={0.1}
+            onChange={(value) => updateSetting('lacunarity', value)}
+            formatValue={(val) => val.toFixed(2)}
+          />
         </div>
 
         <Separator className="bg-purple-700/50 my-3 sm:my-4" />
@@ -142,16 +107,11 @@ export function VariablesPanel({ settings, onChange, onExport }: VariablesPanelP
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <Label htmlFor="wireframe" className="text-purple-200 text-xs sm:text-sm">
-              Wireframe Mode
-            </Label>
-            <Switch
-              id="wireframe"
-              checked={settings.wireframe}
-              onCheckedChange={(checked) => updateSetting('wireframe', checked)}
-            />
-          </div>
+          <SwitchControl
+            label="Wireframe Mode"
+            checked={settings.wireframe}
+            onChange={(checked) => updateSetting('wireframe', checked)}
+          />
         </div>
 
         <Separator className="bg-purple-700/50 my-3 sm:my-4" />
@@ -164,7 +124,7 @@ export function VariablesPanel({ settings, onChange, onExport }: VariablesPanelP
           <Download className="mr-2 h-3 w-3 sm:h-4 sm:w-4" />
           Export
         </Button>
-      </Card>
+      </StyledCard>
     </div>
   );
 }

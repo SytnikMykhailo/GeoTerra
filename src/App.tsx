@@ -72,6 +72,7 @@ export default function App() {
         onOpenProfile={navigateToProfile}
         showBackButton={true}
         onBack={currentPage === 'profile' ? navigateBack : () => navigateTo('landing')}
+        hideProfileButton={currentPage === 'profile'}
       >
         {pages[currentPage as keyof typeof pages]}
       </Layout>
